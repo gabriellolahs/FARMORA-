@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@import "@fontsource/fraunces/400.css";
+@import "@fontsource/fraunces/500.css";
+@import "@fontsource/fraunces/600.css";
+@import "@fontsource/fraunces/600-italic.css";
+@import "@fontsource/fraunces/300-italic.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+:root {
+  /* Farmora token system ---------------------------------------------- */
+  --canopy: #12211a;       /* primary dark ground */
+  --canopy-2: #1a2f24;     /* dark ground, one step up */
+  --parchment: #ede7d8;    /* primary light ground */
+  --husk: #f6f2e7;         /* card / raised light surface */
+  --loam: #4a3423;         /* soil brown, secondary dark accent */
+  --wheat: #c9a227;        /* primary accent - CTAs, highlights */
+  --wheat-dim: #a3841f;
+  --rust: #a1502c;         /* status / active accent, used sparingly */
+  --signal: #3e7a4a;       /* "active" green, muted not neon */
+  --ink: #1a1913;          /* text on light grounds */
+  --ink-soft: #514c3d;     /* secondary text on light grounds */
+  --line: #d9d0b8;         /* hairline dividers on light grounds */
+  --line-dark: #2c4132;    /* hairline dividers on dark grounds */
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-canopy: var(--canopy);
+  --color-canopy-2: var(--canopy-2);
+  --color-parchment: var(--parchment);
+  --color-husk: var(--husk);
+  --color-loam: var(--loam);
+  --color-wheat: var(--wheat);
+  --color-wheat-dim: var(--wheat-dim);
+  --color-rust: var(--rust);
+  --color-signal: var(--signal);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-line-dark: var(--line-dark);
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--wheat);
+  color: var(--canopy);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--wheat);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.font-mono-tag {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.manifest-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: right 0.3s var(--ease-out);
+}
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  right: 0;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(62, 122, 74, 0.45); }
+  70% { box-shadow: 0 0 0 8px rgba(62, 122, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(62, 122, 74, 0); }
+}
+.pulse-dot {
+  animation: pulse-ring 2.2s var(--ease-out) infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+.animate-bob {
+  animation: bob 2s ease-in-out infinite;
+}
+
+@keyframes dash-travel {
+  to { stroke-dashoffset: -1000; }
+}
+.route-dash {
+  stroke-dasharray: 6 10;
+  animation: dash-travel 24s linear infinite;
+}
+
+.rail::-webkit-scrollbar {
+  height: 6px;
+}
+.rail::-webkit-scrollbar-track {
+  background: transparent;
+}
+.rail::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
+}
+
+.snap-rail {
+  scroll-snap-type: x proximity;
+}
+.snap-card {
+  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
